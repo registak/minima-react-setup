@@ -1,12 +1,41 @@
 const webpack = require("webpack");
+const path = require("path");
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+
 module.exports = {
-  entry: ["react-hot-loader/patch", "./src/index.js"],
+  entry: {
+    app: "./src/index.js"
+  },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ["babel-loader"]
+        use: { loader: "babel-loader" }
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+            options: { minimize: true }
+          }
+        ]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "css-loader",
+            options: {minimize: true}
+          },
+          {
+            loader: "sass-loader"
+          }
+        ]
       }
     ]
   },
@@ -14,11 +43,17 @@ module.exports = {
     extensions: ["*", ".js", ".jsx"]
   },
   output: {
-    path: __dirname + "/dist",
+    path: path.resolve(__dirname, "dist"),
     publicPath: "/",
     filename: "bundle.js"
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebPackPlugin({
+      template: "./public/index.html"
+    })
+  ],
+  devtool: "inline-source-map",
   devServer: {
     contentBase: "./dist",
     hot: true

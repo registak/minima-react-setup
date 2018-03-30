@@ -1,6 +1,8 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
 
-const title = "Hello My Minimal React Setup";
+import "./styles/style.scss"
 
-ReactDOM.render(<div>{title}</div>, document.getElementById("app"));
+import App from "./App";
+
+render(<App />, document.getElementById("app"));
